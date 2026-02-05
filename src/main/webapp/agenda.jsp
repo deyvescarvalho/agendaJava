@@ -43,6 +43,17 @@
             font-weight: bold;
             transition: background 0.3s;
         }
+         .btn-gerarRelatorio {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #AA4A44;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
 
         .btn-novo:hover {
             background-color: #219150;
@@ -100,6 +111,8 @@
 <div class="container">
     <h1>Agenda de Contatos</h1>
     <a href="novo.html" class="btn-novo">+ Novo contato</a>
+  
+    <a href="report" class="btn-gerarRelatorio">Gerar Relatório</a>
 
     <table >
         <thead>

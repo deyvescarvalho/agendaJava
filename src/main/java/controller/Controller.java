@@ -3,6 +3,9 @@ package controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,7 +18,7 @@ import model.JavaBeans;
 /**
  * Servlet implementation class Controller
  */
-@WebServlet(urlPatterns = { "/controller", "/main", "/insert", "/select", "/update", "/delete" })
+@WebServlet(urlPatterns = { "/controller", "/main", "/insert", "/select", "/update", "/delete", "/report" })
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	DAO dao = new DAO();
@@ -50,6 +53,8 @@ public class Controller extends HttpServlet {
 		} else if (action.equals("/update")) {
 			atualizarContato(request, response);
 		} else if (action.equals("/delete")) {
+			deletarContato(request, response);
+		} else if (action.equals("/report")) {
 			deletarContato(request, response);
 		} else {
 			response.sendRedirect("index.html");
@@ -92,15 +97,33 @@ public class Controller extends HttpServlet {
 		System.out.println(contato.getIdcon());
 
 	}
-	
+
 	protected void deletarContato(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		contato.setIdcon(request.getParameter("idcon"));
 		System.out.println("IDICON CONTROLLER" + request.getParameter("idcon"));
 		dao.deletarContato(contato);
 		response.sendRedirect("main");
+
+	}
+	
+	protected void gerarRelatorio(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		
+		Document documento = new Document();
+		
+		try {
+			
+			response.setContentType("apllication/pdf");
+			
+			response.addHeader("Content-Disposition", "inline; filename="+ "contatos.pdf");
+			PdfWriter.getInstance(documento, response.getOutputStream());
+			
+		} catch (Exception e) {
+			System.out.println(e);
+			documento.close();
+		}
 	}
 
 	protected void atualizarContato(HttpServletRequest request, HttpServletResponse response)

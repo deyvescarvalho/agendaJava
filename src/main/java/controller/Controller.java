@@ -2,8 +2,12 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import jakarta.servlet.RequestDispatcher;
@@ -55,7 +59,7 @@ public class Controller extends HttpServlet {
 		} else if (action.equals("/delete")) {
 			deletarContato(request, response);
 		} else if (action.equals("/report")) {
-			deletarContato(request, response);
+			gerarRelatorio(request, response);
 		} else {
 			response.sendRedirect("index.html");
 		}
@@ -107,19 +111,42 @@ public class Controller extends HttpServlet {
 		response.sendRedirect("main");
 
 	}
-	
+
 	protected void gerarRelatorio(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		Document documento = new Document();
-		
+
 		try {
-			
+
 			response.setContentType("apllication/pdf");
-			
-			response.addHeader("Content-Disposition", "inline; filename="+ "contatos.pdf");
+			response.reset();
+			response.addHeader("Content-Disposition", "inline; filename=" + "contatos.pdf");
+			response.containsHeader("asdasd");
 			PdfWriter.getInstance(documento, response.getOutputStream());
-			
+			documento.open();
+			documento.add(new Paragraph("Lista de contatos"));
+			documento.add(new Paragraph("  "));
+			PdfPTable tabela = new PdfPTable(3);
+			ArrayList<JavaBeans> lista = dao.listarContatos();
+			PdfPCell col1 = new PdfPCell(new Paragraph("Nome"));
+			PdfPCell col2 = new PdfPCell(new Paragraph("Fone"));
+			PdfPCell col3 = new PdfPCell(new Paragraph("Email"));
+
+			tabela.addCell(col1);
+			tabela.addCell(col2);
+			tabela.addCell(col3);
+
+			for (int i = 0; i < lista.size(); i++) {
+				tabela.addCell(lista.get(i).getNome());
+				tabela.addCell(lista.get(i).getFone());
+				tabela.addCell(lista.get(i).getEmail());
+
+			}
+			documento.add(tabela);
+
+			documento.close();
+
 		} catch (Exception e) {
 			System.out.println(e);
 			documento.close();

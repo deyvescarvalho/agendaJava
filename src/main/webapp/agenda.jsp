@@ -112,7 +112,7 @@
     <h1>Agenda de Contatos</h1>
     <a href="novo.html" class="btn-novo">+ Novo contato</a>
   
-    <a href="report" class="btn-gerarRelatorio">Gerar Relatório</a>
+    <a href="report" class="btn-gerarRelatorio" target="_blank" rel="noopener noreferrer">Gerar Relatório</a>
 
     <table >
         <thead>

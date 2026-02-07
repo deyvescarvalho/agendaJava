@@ -30,6 +30,9 @@ public class DAO {
 
 	}
 
+	
+	
+	
 	public void inserirContato(JavaBeans contato) {
 
 		String create = "INSERT INTO contatos (nome,fone,email) VALUES (?,?,?)";

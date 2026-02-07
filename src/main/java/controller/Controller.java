@@ -9,10 +9,6 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Element;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -46,7 +42,8 @@ public class Controller extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// NOTE: removed writing to response here because it may corrupt binary outputs like PDFs
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 
 		String action = request.getServletPath();
 		System.out.println(action);
@@ -81,10 +78,8 @@ public class Controller extends HttpServlet {
 		request.setAttribute("contatos", lista);
 		RequestDispatcher rd = request.getRequestDispatcher("agenda.jsp");
 		rd.forward(request, response);
+
 	}
-	
-	
-	
 
 	protected void listarContato(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -124,53 +119,35 @@ public class Controller extends HttpServlet {
 
 		try {
 			
+			
 			ArrayList<JavaBeans> lista = dao.listarContatos();
 			
-			// montando estrutura do PDF com iText
-			Font fonteCabecalho = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.WHITE);
-			Font fonteCorpo = FontFactory.getFont(FontFactory.HELVETICA, 11, BaseColor.BLACK);
+			//crie uma estrutura para o pdf com itextpdf
 			
-			// reset the response before setting content type/headers
+			
+
+			response.setContentType("apllication/pdf");
 			response.reset();
-			response.setContentType("application/pdf");
-			response.addHeader("Content-Disposition", "inline; filename=contatos.pdf");
-			
+			response.addHeader("Content-Disposition", "inline; filename=" + "contatos.pdf");
+			response.containsHeader("asdasd");
 			PdfWriter.getInstance(documento, response.getOutputStream());
 			documento.open();
-			documento.add(new Paragraph("Lista de contatos", fonteCabecalho));
+			documento.add(new Paragraph("Lista de contatos"));
 			documento.add(new Paragraph("  "));
-			
-			PdfPTable tabela = new PdfPTable(new float[] {3f, 2f, 4f});
-			tabela.setWidthPercentage(100);
-			
-			PdfPCell col1 = new PdfPCell(new Paragraph("Nome", fonteCabecalho));
-			col1.setBackgroundColor(BaseColor.DARK_GRAY);
-			col1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			col1.setPadding(5);
-			PdfPCell col2 = new PdfPCell(new Paragraph("Fone", fonteCabecalho));
-			col2.setBackgroundColor(BaseColor.DARK_GRAY);
-			col2.setHorizontalAlignment(Element.ALIGN_CENTER);
-			col2.setPadding(5);
-			PdfPCell col3 = new PdfPCell(new Paragraph("Email", fonteCabecalho));
-			col3.setBackgroundColor(BaseColor.DARK_GRAY);
-			col3.setHorizontalAlignment(Element.ALIGN_CENTER);
-			col3.setPadding(5);
+			PdfPTable tabela = new PdfPTable(3);
+			//ArrayList<JavaBeans> lista = dao.listarContatos();
+			PdfPCell col1 = new PdfPCell(new Paragraph("Nome"));
+			PdfPCell col2 = new PdfPCell(new Paragraph("Fone"));
+			PdfPCell col3 = new PdfPCell(new Paragraph("Email"));
 
 			tabela.addCell(col1);
 			tabela.addCell(col2);
 			tabela.addCell(col3);
 			
-			for (JavaBeans jb : lista) {
-				PdfPCell cNome = new PdfPCell(new Paragraph(jb.getNome() != null ? jb.getNome() : "", fonteCorpo));
-				PdfPCell cFone = new PdfPCell(new Paragraph(jb.getFone() != null ? jb.getFone() : "", fonteCorpo));
-				PdfPCell cEmail = new PdfPCell(new Paragraph(jb.getEmail() != null ? jb.getEmail() : "", fonteCorpo));
-				cNome.setPadding(4);
-				cFone.setPadding(4);
-				cEmail.setPadding(4);
-				
-				tabela.addCell(cNome);
-				tabela.addCell(cFone);
-				tabela.addCell(cEmail);
+			for (int i = 0; i < lista.size(); i++) {
+				System.out.println(lista.get(i).getNome());
+				System.out.println(lista.get(i).getFone());
+				System.out.println(lista.get(i).getEmail());
 			}
 			documento.add(tabela);
 

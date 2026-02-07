@@ -132,6 +132,7 @@
                     <td><%=lista.get(i).getNome()%></td>
                     <td><%=lista.get(i).getFone()%></td>
                     <td><%=lista.get(i).getEmail()%></td>
+                    
                     <td>
                         <!-- Botoes Editar/Excluir -->
                         <a href="select?idcon=<%=lista.get(i).getIdcon()%>" class="btn-acao btn-editar">Editar</a>

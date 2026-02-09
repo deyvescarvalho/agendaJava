@@ -53,6 +53,27 @@ public class DAO {
 		}
 	}
 	
+	// metodo para verificar se o usuario existe no banco de dados na tabela usuarios
+	
+	public boolean logarUsuario(Usuario usuario) {
+		String read = "SELECT * FROM usuarios WHERE email = ? AND senha = ?";
+		System.out.println("Logando usuario na DAO...");
+		try {
+			Connection con = conectar();
+			PreparedStatement pst = con.prepareStatement(read);
+			pst.setString(1, usuario.getEmail());
+			pst.setString(2, usuario.getSenha());
+			ResultSet rs = pst.executeQuery();
+			if (rs.next()) {
+				return true;
+			}
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return false;
+	}
+	
 	public void atualizarContato(JavaBeans contato) {
 		
 	

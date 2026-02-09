@@ -23,7 +23,7 @@ import model.Usuario;
 /**
  * Servlet implementation class Controller
  */
-@WebServlet(urlPatterns = { "/controller", "/main", "/insert", "/select", "/update", "/delete", "/report", "/cadastrar" })
+@WebServlet(urlPatterns = { "/controller", "/main", "/insert", "/select", "/update", "/delete", "/report", "/cadastrar", "/logar" })
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	DAO dao = new DAO();
@@ -62,10 +62,12 @@ public class Controller extends HttpServlet {
 			deletarContato(request, response);
 		} else if (action.equals("/report")) {
 			gerarRelatorio(request, response);
-		}else if (action.equals("/report")) {
+		}else if (action.equals("/cadastrar")) {
 			cadastrarUsuario(request, response);
+		}else if (action.equals("/logar")) {
+			logarUsuario(request, response);
 		}else {
-			response.sendRedirect("index.html");
+			response.sendRedirect("login.html");
 		}
 
 		// teste de conexao
@@ -187,6 +189,25 @@ public class Controller extends HttpServlet {
 		usuario.setSenha(request.getParameter("senha"));
 		dao.cadastrarUsuario(usuario);
 		response.sendRedirect("index.html");
+
+	}
+	
+	//logar usuario
+	protected void logarUsuario(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		System.out.println("Logando usuario...");
+		System.out.println("Email: " + request.getParameter("email"));
+
+		usuario.setEmail(request.getParameter("email"));
+		usuario.setSenha(request.getParameter("senha"));
+		
+		if(dao.logarUsuario(usuario)) {
+			System.out.println("Usuario logado com sucesso!");
+			response.sendRedirect("main");
+		}else {
+			response.sendRedirect("cadastrar");
+		}
 
 	}
 

@@ -18,15 +18,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.DAO;
 import model.JavaBeans;
+import model.Usuario;
 
 /**
  * Servlet implementation class Controller
  */
-@WebServlet(urlPatterns = { "/controller", "/main", "/insert", "/select", "/update", "/delete", "/report" })
+@WebServlet(urlPatterns = { "/controller", "/main", "/insert", "/select", "/update", "/delete", "/report", "/cadastrar" })
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	DAO dao = new DAO();
 	JavaBeans contato = new JavaBeans();
+	Usuario usuario = new Usuario();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -60,7 +62,9 @@ public class Controller extends HttpServlet {
 			deletarContato(request, response);
 		} else if (action.equals("/report")) {
 			gerarRelatorio(request, response);
-		} else {
+		}else if (action.equals("/report")) {
+			cadastrarUsuario(request, response);
+		}else {
 			response.sendRedirect("index.html");
 		}
 
@@ -168,6 +172,21 @@ public class Controller extends HttpServlet {
 		contato.setEmail(request.getParameter("email"));
 		dao.atualizarContato(contato);
 		response.sendRedirect("main");
+
+	}
+	
+	//cadastrar usuario
+	protected void cadastrarUsuario(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		System.out.println("Cadastrando usuario...");
+		System.out.println("Nome: " + request.getParameter("nome"));
+
+		usuario.setNome(request.getParameter("nome"));
+		usuario.setEmail(request.getParameter("email"));
+		usuario.setSenha(request.getParameter("senha"));
+		dao.cadastrarUsuario(usuario);
+		response.sendRedirect("index.html");
 
 	}
 

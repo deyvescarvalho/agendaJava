@@ -161,4 +161,24 @@ public class DAO {
 		}
 	}
 
+	public void cadastrarUsuario(Usuario usuario) {
+		
+		System.out.println("Cadastrando usuario na DAO...");
+		System.out.println("Nome: " + usuario.getNome());
+
+		String create = "INSERT INTO usuarios (nome,email,senha) VALUES (?,?,?)";
+		try {
+			Connection con = conectar();
+			PreparedStatement pst = con.prepareStatement(create);
+			pst.setString(1, usuario.getNome());
+			pst.setString(2, usuario.getEmail());
+			pst.setString(3, usuario.getSenha());
+			pst.executeUpdate();
+			pst.close();
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
 }

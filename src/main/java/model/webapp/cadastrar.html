@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Cadastro de Usuário</title>
+<title>Agenda de contatos</title>
 </head>
 <style>
     /* Reset básico e fontes */
@@ -86,22 +86,23 @@
 </style>
 
 <body>
-	<h1>Criar novo contato</h1>
+	<h1>Cadastrar Usuário</h1>
 
-	<form name="frmContato" action="insert">
+	<form name="frmCadastroUsuario" action="cadastrar">
 
 		<table>
 			<tr>
 				<td><input type="text" name="nome" placeholder="nome"></td>
 			</tr>
-			<tr>
-				<td><input type="text" name="fone" placeholder="Fone"></td>
-			</tr>
+			
 			<tr>
 				<td><input type="text" name="email" placeholder="Email"></td>
 			</tr>
+			<tr>
+				<td><input type="text" name="senha" placeholder="Senha"></td>
+			</tr>
 		</table>
-		<input type="button" onclick="validar()" value="Adicionar">
+		<input type="button" onclick="validar2()" value="Adicionar">
 
 
 

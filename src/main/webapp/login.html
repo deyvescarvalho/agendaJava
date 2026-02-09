@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+</head>
+<style>
+    /* Reset básico e fontes */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        background-color: #f0f2f5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        color: #333;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        color: #4a4a4a;
+        font-weight: 600;
+    }
+
+    /* Estilização do Form */
+    form[name="frmContato"] {
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+    }
+
+    /* Tabela de layout (removendo bordas) */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 10px 0;
+    }
+
+    /* Estilo dos Inputs */
+    input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    }
+
+    /* Estilo do Botão */
+    input[type="button"], .link-button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background-color: #007bff;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: background-color 0.3s ease;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    input[type="button"]:hover, .link-button:hover {
+        background-color: #0056b3;
+    }
+
+    .secondary {
+        background-color: #6c757d;
+    }
+    .secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .message {
+        margin-top: 12px;
+        padding: 10px;
+        border-radius: 6px;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+    }
+    .error { background: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
+    .success { background: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
+</style>
+
+<body>
+	<h1>Acessar Agenda</h1>
+
+	<div id="msg"></div>
+
+	<form name="frmLogarUsuario" action="logar">
+
+		<table>
+				
+			<tr>
+				<td><input type="text" name="email" placeholder="Email" id="email"></td>
+			</tr>
+			<tr>
+				<td><input type="text" name="senha" placeholder="Senha" id="senha"></td>
+			</tr>
+		</table>
+		<input type="button" onclick="doLogin()" value="Logar">
+		<!-- botão para cadastrar -->
+		<a class="link-button secondary" href="cadastrar.html">Cadastrar</a>
+
+	</form>
+	<script>
+	// read query params and show messages
+	function getQueryParams() {
+		var params = {};
+		location.search.substr(1).split("&").forEach(function(p){
+			if(!p) return;
+			var parts = p.split('=');
+			params[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1] || '');
+		});
+		return params;
+	}
+
+	function showMessage(type, text) {
+		var msg = document.getElementById('msg');
+		msg.innerHTML = '<div class="message ' + (type==='error'?'error':'success') + '">' + text + '</div>';
+	}
+
+	var params = getQueryParams();
+	if (params.error) {
+		showMessage('error', 'Usuário ou senha inválidos. Tente novamente.');
+	}
+	if (params.registered) {
+		showMessage('success', 'Cadastro realizado com sucesso. Faça login.');
+	}
+
+	function doLogin() {
+		var email = document.getElementById('email').value.trim();
+		var senha = document.getElementById('senha').value.trim();
+		if (!email || !senha) {
+			showMessage('error', 'Preencha email e senha.');
+			return;
+		}
+		// basic client-side validation then submit
+		var form = document.forms['frmLogarUsuario'];
+		form.submit();
+	}
+	</script>
+</body>
+</html>

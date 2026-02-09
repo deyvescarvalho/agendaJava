@@ -34,6 +34,15 @@ public class AuthFilter implements Filter {
 
         String path = req.getRequestURI().substring(req.getContextPath().length());
 
+        // Debug: print path and session info
+        try {
+            HttpSession debugSession = req.getSession(false);
+            String debugUser = (debugSession != null) ? (String) debugSession.getAttribute("usuarioLogado") : null;
+            System.out.println("[AuthFilter] path=" + path + " | usuarioLogado(session)=" + debugUser);
+        } catch (Exception e) {
+            System.out.println("[AuthFilter] debug error: " + e.getMessage());
+        }
+
         // Allow public resources
         if (path.startsWith("/login.html") || path.startsWith("/cadastrar.html") || path.startsWith("/cadastrar") || path.startsWith("/logar")
                 || path.startsWith("/scripts/") || path.startsWith("/css/") || path.startsWith("/webjars/")

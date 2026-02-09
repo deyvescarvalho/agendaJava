@@ -85,6 +85,14 @@ public class Controller extends HttpServlet {
 		ArrayList<JavaBeans> lista = dao.listarContatos();
 
 		request.setAttribute("contatos", lista);
+		// also expose logged user as request attribute for JSPs
+		String usuarioLogado = null;
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			usuarioLogado = (String) session.getAttribute("usuarioLogado");
+		}
+		System.out.println("[Controller.contatos] usuarioLogado=" + usuarioLogado);
+		request.setAttribute("usuarioLogado", usuarioLogado);
 		RequestDispatcher rd = request.getRequestDispatcher("agenda.jsp");
 		rd.forward(request, response);
 
@@ -191,7 +199,8 @@ public class Controller extends HttpServlet {
 		usuario.setEmail(request.getParameter("email"));
 		usuario.setSenha(request.getParameter("senha"));
 		dao.cadastrarUsuario(usuario);
-		response.sendRedirect("index.html");
+		// after registering, redirect to login with success flag
+		response.sendRedirect("login.html?registered=1");
 
 	}
 	
@@ -210,9 +219,11 @@ public class Controller extends HttpServlet {
 			// set session attribute to mark user as logged in
 			HttpSession session = request.getSession(true);
 			session.setAttribute("usuarioLogado", usuario.getEmail());
-			response.sendRedirect("index.html");
+			// redirect to protected main so JSP can show logout
+			response.sendRedirect("main");
 		}else {
-			response.sendRedirect("cadastrar.html");
+			// redirect back to login with error flag
+			response.sendRedirect("login.html?error=1");
 		}
 
 	}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Cadastro de Usuário</title>
+</head>
+<style>
+    /* Reset básico e fontes */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        background-color: #f0f2f5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        color: #333;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        color: #4a4a4a;
+        font-weight: 600;
+    }
+
+    /* Estilização do Form */
+    form[name="frmContato"] {
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+    }
+
+    /* Tabela de layout (removendo bordas) */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td { padding: 10px 0; }
+
+    input[type="text"] { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
+    input[type="button"], .link-button { width: 100%; padding: 12px; border: none; border-radius: 8px; background-color: #007bff; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; text-align: center; text-decoration: none; display: inline-block; }
+    .secondary { background-color: #6c757d; }
+
+    .message { margin-top: 12px; padding: 10px; border-radius: 6px; width: 100%; max-width: 400px; text-align: center; }
+    .error { background: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
+    .success { background: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
+</style>
+<body>
+	<h1>Cadastrar Usuário</h1>
+
+	<div id="msg"></div>
+
+	<form name="frmCadastroUsuario" action="cadastrar">
+
+		<table>
+			<tr>
+				<td><input type="text" name="nome" id="nome" placeholder="Nome"></td>
+			</tr>
+			<tr>
+				<td><input type="text" name="email" id="email" placeholder="Email"></td>
+			</tr>
+			<tr>
+				<td><input type="text" name="senha" id="senha" placeholder="Senha"></td>
+			</tr>
+		</table>
+		<input type="button" onclick="doRegister()" value="Adicionar">
+		<a class="link-button secondary" href="login.html">Voltar ao Login</a>
+
+	</form>
+	<script>
+	function showMessage(type, text) {
+		var msg = document.getElementById('msg');
+		msg.innerHTML = '<div class="message ' + (type==='error'?'error':'success') + '">' + text + '</div>';
+	}
+
+	function doRegister() {
+		var nome = document.getElementById('nome').value.trim();
+		var email = document.getElementById('email').value.trim();
+		var senha = document.getElementById('senha').value.trim();
+		if (!nome || !email || !senha) {
+			showMessage('error','Preencha todos os campos.');
+			return;
+		}
+		// basic client-side validation
+		if (senha.length < 4) { showMessage('error','Senha muito curta.'); return; }
+		var form = document.forms['frmCadastroUsuario'];
+		form.submit();
+	}
+	</script>
+</body>
+</html>

@@ -2,6 +2,7 @@
 <%@ page import="model.JavaBeans"%>
 <%@ page import="java.util.ArrayList"%>
 <% ArrayList<JavaBeans> lista = (ArrayList<JavaBeans>) request.getAttribute("contatos"); %>
+<% String usuarioLogado = (String) session.getAttribute("usuarioLogado"); %>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -30,6 +31,13 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
         }
 
         .btn-novo {
@@ -104,12 +112,25 @@
             background-color: #e74c3c;
             color: white;
         }
+
+        .logout-btn { background:#6c757d; color:white; padding:8px 14px; border-radius:6px; text-decoration:none; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Agenda de Contatos</h1>
+    <div class="topbar">
+        <h1>Agenda de Contatos</h1>
+        <div>
+            <% if (usuarioLogado != null) { %>
+                <span>Olá, <%= usuarioLogado %></span>
+                <a href="logout" class="logout-btn">Logout</a>
+            <% } else { %>
+                <a href="login.html" class="logout-btn">Login</a>
+            <% } %>
+        </div>
+    </div>
+
     <a href="novo.html" class="btn-novo">+ Novo contato</a>
   
     <a href="report" class="btn-gerarRelatorio" target="_blank" rel="noopener noreferrer">Gerar Relatório</a>

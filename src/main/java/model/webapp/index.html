@@ -33,7 +33,7 @@
         }
 
         /* Estilização do Link/Botão */
-        a {
+        .btn {
             display: inline-block;
             text-decoration: none;
             background-color: #007bff;
@@ -42,10 +42,18 @@
             border-radius: 8px;
             font-weight: bold;
             transition: background-color 0.3s ease;
+            margin: 5px;
         }
 
-        a:hover {
+        .btn:hover {
             background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
         }
     </style>
 </head>
@@ -53,7 +61,8 @@
     
     <div class="container">
         <h1>Agenda de Contatos</h1>
-        <a href="main">Acessar agenda</a>
+        <a class="btn" href="main">Acessar agenda</a>
+        <a class="btn btn-secondary" href="logout">Logout</a>
 
     </div>
 

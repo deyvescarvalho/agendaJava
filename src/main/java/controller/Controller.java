@@ -16,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.DAO;
 import model.JavaBeans;
 import model.Usuario;
@@ -23,7 +24,7 @@ import model.Usuario;
 /**
  * Servlet implementation class Controller
  */
-@WebServlet(urlPatterns = { "/controller", "/main", "/insert", "/select", "/update", "/delete", "/report", "/cadastrar", "/logar" })
+@WebServlet(urlPatterns = { "/controller", "/main", "/insert", "/select", "/update", "/delete", "/report", "/cadastrar", "/logar", "/logout" })
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	DAO dao = new DAO();
@@ -66,6 +67,8 @@ public class Controller extends HttpServlet {
 			cadastrarUsuario(request, response);
 		}else if (action.equals("/logar")) {
 			logarUsuario(request, response);
+		}else if (action.equals("/logout")) {
+			logout(request, response);
 		}else {
 			response.sendRedirect("login.html");
 		}
@@ -204,11 +207,24 @@ public class Controller extends HttpServlet {
 		
 		if(dao.logarUsuario(usuario)) {
 			System.out.println("Usuario logado com sucesso!");
-			response.sendRedirect("main");
+			// set session attribute to mark user as logged in
+			HttpSession session = request.getSession(true);
+			session.setAttribute("usuarioLogado", usuario.getEmail());
+			response.sendRedirect("index.html");
 		}else {
-			response.sendRedirect("cadastrar");
+			response.sendRedirect("cadastrar.html");
 		}
 
+	}
+
+	// logout
+	protected void logout(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			session.invalidate();
+		}
+		response.sendRedirect("login.html");
 	}
 
 	// listar contatos
